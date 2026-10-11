@@ -1,6 +1,7 @@
 /* Copyright (C) 2026 AERA Recovery Project contributors
  * SPDX-License-Identifier: Apache-2.0 */
 #include <aeraui/backend.hpp>
+#include <aeraui/theme_defaults.hpp>
 #include "../../aera_remote/backup_cancel.hpp"
 #include "aeraui/features/update/payload_inspector.hpp"
 #include "aeraui/features/update/payload_arb.hpp"
@@ -1798,14 +1799,8 @@ bool RecoverySetUtcOffset(int minutes) {
 }
 uint32_t RecoveryAccentColor() {
   LoadAeraPreferencesIfAvailable();
-  constexpr uint32_t kDefault = 0x16c8ff;
   const std::string value = DataManager::GetStrValue("aera_theme_accent");
-  if (value.empty()) return kDefault;
-  char *end = nullptr;
-  const unsigned long parsed = strtoul(value.c_str(), &end, 16);
-  if (end == value.c_str() || *end != '\0' || parsed == 0 ||
-      parsed > 0x00ffffffUL) return kDefault;
-  return static_cast<uint32_t>(parsed);
+  return theme::AccentOrDefault(value.c_str());
 }
 bool RecoverySetAccentColor(uint32_t rgb) {
   rgb &= 0x00ffffffu;
@@ -2180,7 +2175,7 @@ EarlyUiPreferences DefaultEarlyUiPreferences() {
   if (maximum > 0)
     preferences.brightness = std::clamp(TW_DEFAULT_BRIGHTNESS * 100 / maximum, 10, 100);
 #endif
-  preferences.accent = "16c8ff";
+  preferences.accent = theme::kDefaultAccentHex;
   preferences.theme = "graphite";
   preferences.surface_style = 0;
   preferences.tinted_icon_backgrounds = 0;
@@ -2219,7 +2214,8 @@ EarlyUiPreferences CaptureCurrentEarlyUiPreferences() {
   preferences.brightness = DataManager::GetIntValue("tw_brightness_pct");
   if (preferences.brightness < 10 || preferences.brightness > 100) preferences.brightness = 100;
   preferences.accent = DataManager::GetStrValue("aera_theme_accent");
-  if (!ValidAccent(preferences.accent)) preferences.accent = "16c8ff";
+  if (!ValidAccent(preferences.accent))
+    preferences.accent = theme::kDefaultAccentHex;
   preferences.theme = DataManager::GetStrValue("aera_theme_mode");
   if (preferences.theme != "light" && preferences.theme != "graphite" &&
       preferences.theme != "amoled")

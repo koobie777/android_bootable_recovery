@@ -96,10 +96,10 @@ void BrandHero(lv_obj_t *parent, int x, int y, int width, int height,
   lv_obj_set_style_clip_corner(hero, true, 0);
   lv_obj_set_style_bg_grad_dir(hero, LV_GRAD_DIR_NONE, 0);
 
-  AddMatrixEngraving(hero, width, height, kCyan);
+  AddMatrixEngraving(hero, width, height, kAccent);
 
   // Crop the approved boot composition just below the A. The white layer has
-  // no orbit; from the cyan layer we reveal only the one colored A segment.
+  // no orbit; from the accent layer we reveal only the one colored A segment.
   // The boot spinner, wordmark and subtitle deliberately stay out of About.
   const int logo_scale = landscape ? 250 : 230;
   const int crop_width = assets::kAeraBrandWidth * logo_scale / LV_SCALE_NONE;
@@ -128,7 +128,7 @@ void BrandHero(lv_obj_t *parent, int x, int y, int width, int height,
                   kSegmentHeight * logo_scale / LV_SCALE_NONE);
   lv_obj_set_style_clip_corner(segment_crop, true, 0);
   auto *segment = BrandLayer(segment_crop, &assets::kAeraBrandAccent,
-                             logo_scale, kCyan);
+                             logo_scale, kAccent);
   lv_image_set_pivot(segment, 0, 0);
   lv_obj_set_pos(segment, -kSegmentX * logo_scale / LV_SCALE_NONE,
                  -kSegmentY * logo_scale / LV_SCALE_NONE);
@@ -141,7 +141,7 @@ void BrandHero(lv_obj_t *parent, int x, int y, int width, int height,
   lv_obj_set_style_text_letter_space(word, 8, 0);
   lv_obj_align(word, LV_ALIGN_BOTTOM_MID, 0, landscape ? -132 : -118);
   auto *project = FixedLabel(hero, "RECOVERY PROJECT",
-                             &lv_font_montserrat_18, kCyan);
+                             &lv_font_montserrat_18, kAccent);
   lv_obj_set_style_text_letter_space(project, 3, 0);
   lv_obj_set_style_text_letter_space(project, 7, 0);
   lv_obj_align(project, LV_ALIGN_BOTTOM_MID, 0, landscape ? -66 : -54);

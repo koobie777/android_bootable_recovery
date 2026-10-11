@@ -38,8 +38,21 @@ func aeraRootManagerFlags(ctx android.BaseContext) []string {
 	return []string{"-DAERA_ENABLE_ROOT_MANAGER=" + rootManager}
 }
 
+func aeraDefaultAccentFlags(ctx android.BaseContext) []string {
+	flag, err := aeraDefaultAccentFlag(getMakeVars(ctx, "AERA_DEFAULT_ACCENT"))
+	if err != nil {
+		ctx.ModuleErrorf("%s", err)
+		return nil
+	}
+	if flag == "" {
+		return nil
+	}
+	return []string{flag}
+}
+
 func globalFlags(ctx android.BaseContext) []string {
 	cflags := aeraRootManagerFlags(ctx)
+	cflags = append(cflags, aeraDefaultAccentFlags(ctx)...)
 	if getMakeVars(ctx, "AB_OTA_UPDATER") == "true" {
 		cflags = append(cflags, "-DAB_OTA_UPDATER=1")
 	}
@@ -117,7 +130,8 @@ func aeraHostDefaultsFactory() android.Module {
 }
 
 func aeraUiDefaults(ctx android.BaseContext) []string {
-	return append(aeraUiLanguageFlags(ctx), aeraRootManagerFlags(ctx)...)
+	cflags := append(aeraUiLanguageFlags(ctx), aeraRootManagerFlags(ctx)...)
+	return append(cflags, aeraDefaultAccentFlags(ctx)...)
 }
 
 func aeraUiDefaultsFactory() android.Module {

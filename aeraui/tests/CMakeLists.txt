@@ -43,6 +43,20 @@ target_compile_definitions(ui_check PRIVATE
 target_compile_options(ui_check PRIVATE -UNDEBUG)
 target_link_libraries(ui_check PRIVATE lvgl PNG::PNG JPEG::JPEG Threads::Threads ZLIB::ZLIB)
 enable_testing()
+foreach(accent stock orange)
+  add_executable(theme_defaults_${accent}_test theme_defaults_test.cpp)
+  target_include_directories(theme_defaults_${accent}_test PRIVATE ../include)
+  target_compile_options(theme_defaults_${accent}_test PRIVATE -UNDEBUG)
+  if(accent STREQUAL "orange")
+    target_compile_definitions(theme_defaults_${accent}_test PRIVATE
+      AERA_DEFAULT_ACCENT=0xff6900 EXPECT_DEFAULT_ACCENT_RGB=0xff6900
+      EXPECT_DEFAULT_ACCENT_HEX="ff6900")
+  else()
+    target_compile_definitions(theme_defaults_${accent}_test PRIVATE
+      EXPECT_DEFAULT_ACCENT_RGB=0x16c8ff EXPECT_DEFAULT_ACCENT_HEX="16c8ff")
+  endif()
+  add_test(NAME theme_defaults_${accent} COMMAND theme_defaults_${accent}_test)
+endforeach()
 set(AERA_TINYXML2_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../../../external/tinyxml2")
 add_executable(android_packages_xml_test android_packages_xml_test.cpp
   ../features/backup/android_packages_xml.cpp "${AERA_TINYXML2_DIR}/tinyxml2.cpp")

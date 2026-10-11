@@ -311,7 +311,7 @@ void FastbootMark(lv_obj_t *parent, bool landscape) {
                   kSegmentHeight * scale / LV_SCALE_NONE);
   lv_obj_set_style_clip_corner(segment_crop, true, 0);
   auto *segment = BrandLayer(segment_crop, &assets::kAeraBrandAccent,
-                             scale, kCyan);
+                             scale, kAccent);
   lv_obj_set_pos(segment, -kSegmentX * scale / LV_SCALE_NONE,
                  -kSegmentY * scale / LV_SCALE_NONE);
 }

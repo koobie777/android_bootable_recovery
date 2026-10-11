@@ -12,6 +12,7 @@
 #include "fonts/aera_fallback.hpp"
 #include "wallpaper.hpp"
 #include <aeraui/i18n.hpp>
+#include <aeraui/theme_defaults.hpp>
 
 namespace aeraui::design {
 
@@ -57,7 +58,7 @@ inline lv_color_t kOnAccent = Color(0x071116);
 
 // Runtime theme tokens. All interactive AERA surfaces consume these shared
 // values, so rebuilding a scene after ApplyAccent() recolors the entire UI.
-constexpr uint32_t kDefaultAccentRgb = 0x16c8ff;
+constexpr uint32_t kDefaultAccentRgb = theme::kDefaultAccentRgb;
 inline uint32_t kAccentRgb = kDefaultAccentRgb;
 inline lv_color_t kAccent = Color(kDefaultAccentRgb);
 inline lv_color_t kAccentPressed = Color(0x0aa8db);

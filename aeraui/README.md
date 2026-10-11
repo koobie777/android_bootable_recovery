@@ -27,6 +27,36 @@ canvas renders across the complete native framebuffer without letterbox bars,
 and physical touch coordinates are mapped back to it. Leaving adaptive mode
 unset retains native one-to-one rendering.
 
+Device trees can set a first-start and reset accent while retaining the native
+dark graphite appearance. `AERA_DEFAULT_ACCENT` accepts exactly six hexadecimal
+RGB digits without `#` or `0x`; `000000` and malformed values fail configuration.
+Leaving it unset preserves the stock cyan `16c8ff`. Saved user accents still take
+precedence, including the early UI preference cache used before decryption.
+
+Set the public value in the device configuration:
+
+```make
+AERA_DEFAULT_ACCENT := ff6900
+```
+
+The vendor build bridge must export `AERA_DEFAULT_ACCENT` in the
+`twrpVarsPlugin` namespace. Add it to the `add_soong_config_var` list in
+`vendor/recovery/aera_soong_config.mk`, which runs after the upstream
+`BoardConfigSoong.mk` initializes that namespace. Direct device namespace
+exports made before that initialization are cleared. The same native constant
+supplies rendering, missing or invalid saved-value fallbacks, preference
+serialization, and theme reset. Boot, fastboot, and About branding follow the
+live accent while retaining the existing logo masks.
+
+The build-value validator can be checked without loading the Android build:
+
+```sh
+go test aeraui/build/accent_config.go aeraui/build/accent_config_test.go
+```
+
+The host harness also includes `theme_defaults_stock` and
+`theme_defaults_orange`, covering native fallback and saved accent precedence.
+
 For bring-up, create `/tmp/aeraui-capture` over ADB. The runner removes
 the request and writes the current framebuffer to `/tmp/aeraui.png`.
 

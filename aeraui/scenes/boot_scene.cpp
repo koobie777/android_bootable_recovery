@@ -271,7 +271,7 @@ void SetSubtitleProgress(void *object, int32_t value) {
 
 void SetCyanProgress(void *object, int32_t value) {
   auto *boot = static_cast<BootContext *>(object);
-  const auto color = lv_color_mix(Color(0x16c8ff), lv_color_white(),
+  const auto color = lv_color_mix(kAccent, lv_color_white(),
                                   static_cast<uint8_t>(value));
   lv_obj_set_style_image_recolor(boot->objects[kMidRight], color, 0);
   lv_obj_set_style_image_recolor(boot->objects[kArrow], color, 0);
@@ -460,7 +460,7 @@ void BuildBootScene(lv_obj_t *screen, ActionCallback callback, void *context) {
   // not.  Precomposed two-tone layers cut per-frame transforms from nine to
   // two and avoid repeatedly resampling every seam in the finished mark.
   boot->final_white = CreateImage(&assets::kAeraBrandWhite, lv_color_white());
-  boot->final_cyan = CreateImage(&assets::kAeraBrandAccent, Color(0x16c8ff));
+  boot->final_cyan = CreateImage(&assets::kAeraBrandAccent, kAccent);
   for (auto *image : {boot->final_white, boot->final_cyan}) {
     lv_image_set_pivot(image, kFinalWidth / 2, kFinalHeight / 2);
     PositionFinalObject(image, boot->base_scale);
